@@ -32,6 +32,7 @@ jobs:
           else
             echo "No bump keyword found. Skipping."
             exit 0
+          fi
 
       - name: Get package name from pyproject.toml
         id: package
