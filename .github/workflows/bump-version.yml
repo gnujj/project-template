@@ -2,8 +2,8 @@ name: Bump Version
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:  # дозволяє вручну запускати з вкладки Actions
 
 jobs:
   bump-version:
@@ -34,7 +34,7 @@ jobs:
             exit 0
           fi
 
-      - name: Get package name from pyproject.toml
+      - name: Get package name
         id: package
         if: ${{ steps.detect.outputs.level != '' }}
         run: |
