@@ -1,6 +1,6 @@
 [project]
 name = "project-template"
-version = "0.0.0"
+version = "0.1.0"
 description = "A lightweight Python project template using Poetry and GitHub Actions."
 authors = [
     { name = "Your Name", email = "you@example.com" },
