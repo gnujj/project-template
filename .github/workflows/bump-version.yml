@@ -3,7 +3,12 @@ name: Bump Version
 on:
   push:
     branches: [main]
-  workflow_dispatch:  # дозволяє вручну запускати з вкладки Actions
+  workflow_dispatch:
+    inputs:
+      level:
+        description: "Bump level (patch, minor, major)"
+        required: true
+        default: "patch"
 
 jobs:
   bump-version:
@@ -18,20 +23,25 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Detect version bump level from commit message
+      - name: Detect version bump level
         id: detect
         run: |
-          COMMIT_MSG="$(git log -1 --pretty=%B)"
-          echo "Commit message: $COMMIT_MSG"
-          if [[ "$COMMIT_MSG" == *"[major]"* ]]; then
-            echo "level=major" >> $GITHUB_OUTPUT
-          elif [[ "$COMMIT_MSG" == *"[minor]"* ]]; then
-            echo "level=minor" >> $GITHUB_OUTPUT
-          elif [[ "$COMMIT_MSG" == *"[patch]"* ]]; then
-            echo "level=patch" >> $GITHUB_OUTPUT
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "Manual run: ${{ inputs.level }}"
+            echo "level=${{ inputs.level }}" >> $GITHUB_OUTPUT
           else
-            echo "No bump keyword found. Skipping."
-            exit 0
+            COMMIT_MSG="$(git log -1 --pretty=%B)"
+            echo "Commit message: $COMMIT_MSG"
+            if [[ "$COMMIT_MSG" == *"[major]"* ]]; then
+              echo "level=major" >> $GITHUB_OUTPUT
+            elif [[ "$COMMIT_MSG" == *"[minor]"* ]]; then
+              echo "level=minor" >> $GITHUB_OUTPUT
+            elif [[ "$COMMIT_MSG" == *"[patch]"* ]]; then
+              echo "level=patch" >> $GITHUB_OUTPUT
+            else
+              echo "No bump keyword found. Skipping."
+              exit 0
+            fi
           fi
 
       - name: Get package name
