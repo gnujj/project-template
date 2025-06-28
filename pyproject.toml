@@ -1,0 +1,17 @@
+[project]
+name = "project-template"
+version = "0.0.0"
+description = "A lightweight Python project template using Poetry and GitHub Actions."
+authors = [
+    { name = "Your Name", email = "you@example.com" },
+]
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+
+[project.scripts]
+project-template = "project_template.main:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
