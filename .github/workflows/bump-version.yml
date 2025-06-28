@@ -36,15 +36,25 @@ jobs:
 
       - name: Get package name from pyproject.toml
         id: package
+        if: ${{ steps.detect.outputs.level != '' }}
         run: |
           NAME=$(python bump_version.py --print-package)
           echo "PACKAGE_NAME=$NAME" >> $GITHUB_OUTPUT
 
       - name: Bump version
+        if: ${{ steps.detect.outputs.level != '' }}
         run: |
           python bump_version.py ${{ steps.detect.outputs.level }}
 
+      - name: Get new version
+        id: version
+        if: ${{ steps.detect.outputs.level != '' }}
+        run: |
+          VERSION=$(python bump_version.py --print-version)
+          echo "new_version=$VERSION" >> $GITHUB_OUTPUT
+
       - name: Commit and push version bump
+        if: ${{ steps.detect.outputs.level != '' }}
         run: |
           echo "Detected package folder: ${{ steps.package.outputs.PACKAGE_NAME }}"
           git config user.name "github-actions[bot]"
@@ -52,3 +62,9 @@ jobs:
           git add pyproject.toml "${{ steps.package.outputs.PACKAGE_NAME }}/__init__.py"
           git commit -m "🔖 Bump version [${{ steps.detect.outputs.level }}]" || echo "No changes to commit"
           git push
+
+      - name: Create git tag
+        if: ${{ steps.detect.outputs.level != '' }}
+        run: |
+          git tag "v${{ steps.version.outputs.new_version }}"
+          git push origin "v${{ steps.version.outputs.new_version }}"

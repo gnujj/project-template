@@ -45,6 +45,13 @@ def main():
         print(package_name)
         sys.exit(0)
 
+    if arg == "--print-version":
+        package_name = read_package_name()
+        init_path = Path(package_name) / "__init__.py"
+        current_version = read_version(init_path)
+        print(current_version)
+        sys.exit(0)
+
     package_name = read_package_name()
     init_path = Path(package_name) / "__init__.py"
     pyproject_path = Path("pyproject.toml")
