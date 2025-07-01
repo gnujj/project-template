@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       level:
-        description: "Bump level (patch, minor, major)"
+        description: "Bump level (major, minor, patch)"
         required: true
         default: "patch"
 

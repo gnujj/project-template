@@ -1,9 +1,7 @@
-# bump_version.py
-
 import re
 from pathlib import Path
 import sys
-import tomllib  # Requires Python 3.11+
+import tomllib
 
 def read_package_name() -> str:
     pyproject = Path("pyproject.toml")

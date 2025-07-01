@@ -43,7 +43,7 @@ poetry run project-template
 
 Semantic versioning is powered by GitHub Actions:
 
-- Push a commit to `main` with `[patch]`, `[minor]`, or `[major]` to trigger a version bump.
+- Push a commit to `main` with `[major]`, `[minor]`, or `[patch]` to trigger a version bump.
 - The workflow:
   - updates `pyproject.toml` and `__init__.py`,
   - creates and pushes a Git tag,
